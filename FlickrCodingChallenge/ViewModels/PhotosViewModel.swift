@@ -72,16 +72,16 @@ class PhotosViewModel {
     
     func createCellViewModel( photo: Photo ) -> PhotoCollectionCellViewModel {
         
-        var vmCell = PhotoCollectionCellViewModel(id: photo.id,
+        var cellVM = PhotoCollectionCellViewModel(id: photo.id,
                                                   title: photo.title,
                                                   name: photo.ownername,
                                                   imageUrl: photo.url_m,
                                                   isFavourite: isFavouritePhoto(photo.id))
         
-        vmCell.updateFavouriteStatus = { [weak self] flag in
+        cellVM.updateFavouriteStatus = { [weak self] flag in
             self?.isReloadNeeded = false
 
-            if let row = self?.cellViewModels.firstIndex(where: {$0.id == vmCell.id}) {
+            if let row = self?.cellViewModels.firstIndex(where: {$0.id == cellVM.id}) {
                 self?.cellViewModels[row].isFavourite = flag
                 let selectedPhoto = self!.photos[row]
                 
@@ -89,7 +89,7 @@ class PhotosViewModel {
                 flag ? PhotoCache.shared.addPhotoToFavourites(selectedPhoto) : PhotoCache.shared.removePhotoFromFavourites(selectedPhoto)
             }
         }
-        return vmCell
+        return cellVM
     }
     
     private func processFetchedPhoto(photos: [Photo]?) {

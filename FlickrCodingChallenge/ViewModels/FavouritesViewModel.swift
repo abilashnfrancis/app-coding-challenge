@@ -8,14 +8,12 @@
 import Foundation
 
 class FavouritesViewModel {
-    
-    var favourites: [PhotoCollectionCellViewModel] = [PhotoCollectionCellViewModel]()
-    
+        
     var numberOfCells: Int {
         return PhotoCache.shared.getFavouritesCount()
     }
     
-    var favouritesPhotos: [Photo] {
+    private var favouritesPhotos: [Photo] {
         return PhotoCache.shared.getFavouritePhotos() ?? [Photo]()
     }
     
@@ -34,17 +32,17 @@ class FavouritesViewModel {
         
     func createCellViewModel( photo: Photo ) -> PhotoCollectionCellViewModel {
         
-        var vmCell = PhotoCollectionCellViewModel(id: photo.id, title: photo.title, name: photo.ownername, imageUrl: photo.url_m, isFavourite: true)
-        vmCell.updateFavouriteStatus = { [weak self] flag in
+        var cellVM = PhotoCollectionCellViewModel(id: photo.id, title: photo.title, name: photo.ownername, imageUrl: photo.url_m, isFavourite: true)
+        cellVM.updateFavouriteStatus = { [weak self] flag in
 
-            if let row = self?.cellViewModels.firstIndex(where: {$0.id == vmCell.id}) {
+            if let row = self?.cellViewModels.firstIndex(where: {$0.id == cellVM.id}) {
                 // Selected photo object can be identified using the id, so ignoring rest of the properties
-                let selectedPhoto = Photo(id: vmCell.id, ownername: "", title: "", url_m: "")
+                let selectedPhoto = Photo(id: cellVM.id, ownername: "", title: "", url_m: "")
                 PhotoCache.shared.removePhotoFromFavourites(selectedPhoto)
                 self?.cellViewModels.remove(at: row)
             }
         }
-        return vmCell
+        return cellVM
     }
     
     func initPhotoList() {
@@ -55,13 +53,4 @@ class FavouritesViewModel {
         self.cellViewModels = vms
     }
     
-    func addToFavourites(_ photoCellVM: PhotoCollectionCellViewModel) {
-        favourites.append(photoCellVM)
-    }
-    
-    func removeFromFavourites(_ photoCellVM: PhotoCollectionCellViewModel) {
-        if let index = favourites.firstIndex(where: {$0.id == photoCellVM.id}) {
-            favourites.remove(at: index)
-        }
-    }
 }

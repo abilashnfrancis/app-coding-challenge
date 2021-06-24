@@ -18,11 +18,8 @@ class PhotosViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         initViewModel()
-        
     }
-
     
     func initViewModel() {
         
@@ -89,6 +86,5 @@ extension PhotosViewController: UICollectionViewDelegate, UICollectionViewDataSo
         
         return cell
     }
-    
     
 }

@@ -43,6 +43,7 @@ class FavouritesViewController: UIViewController {
 
 
 extension FavouritesViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numberOfCells
     }
@@ -57,6 +58,5 @@ extension FavouritesViewController: UICollectionViewDelegate, UICollectionViewDa
 
         return cell
     }
-
-
+    
 }

@@ -22,38 +22,23 @@ class PhotoCollectionViewCell: UICollectionViewCell {
             titleLabel.text = photoCollectionCellViewModel?.title
             namelabel.text = photoCollectionCellViewModel?.name
             imageView?.sd_setImage(with: URL(string: photoCollectionCellViewModel?.imageUrl ?? "" ), completed: nil)
-//            imageView.load(url: URL(string: (photoCollectionCellViewModel?.imageUrl)!)!)
             favouritesButton.isHidden = photoCollectionCellViewModel?.isFavourite ?? false
             unFavouriteButton.isHidden = !(photoCollectionCellViewModel?.isFavourite ?? false)
         }
     }
     
     @IBAction func favouritesButtonClicked(_ sender: Any) {
-        
-        favouritesButton.isHidden = true
-        unFavouriteButton.isHidden = false
-        photoCollectionCellViewModel?.isFavourite = true
-        self.photoCollectionCellViewModel?.updateFavouriteStatus?(true)
+        performFavouriteAction(true)
     }
     
     @IBAction func unFavouriteButtonClicked(_ sender: Any) {
-        unFavouriteButton.isHidden = true
-        favouritesButton.isHidden = false
-        photoCollectionCellViewModel?.isFavourite = false
-        self.photoCollectionCellViewModel?.updateFavouriteStatus?(false)
+        performFavouriteAction(false)
+    }
+    
+    func performFavouriteAction(_ flag: Bool) {
+        favouritesButton.isHidden = flag
+        unFavouriteButton.isHidden = !flag
+        photoCollectionCellViewModel?.isFavourite = flag
+        self.photoCollectionCellViewModel?.updateFavouriteStatus?(flag)
     }
 }
-
-//extension UIImageView {
-//    func load(url: URL) {
-//        DispatchQueue.global().async { [weak self] in
-//            if let data = try? Data(contentsOf: url) {
-//                if let image = UIImage(data: data) {
-//                    DispatchQueue.main.async {
-//                        self?.image = image
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
