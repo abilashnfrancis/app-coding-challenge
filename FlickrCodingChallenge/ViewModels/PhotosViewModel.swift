@@ -46,6 +46,7 @@ class PhotosViewModel {
 
     init( apiService: APIServiceProtocol = APIService()) {
         self.apiService = apiService
+        addPhotoUnfavouriteObserver()
     }
     
     func initFetch() {
@@ -58,6 +59,16 @@ class PhotosViewModel {
             } else {
                 PhotoCache.shared.savePhotos(photos)
                 self?.processFetchedPhoto(photos: photos)
+            }
+        }
+    }
+    
+    func addPhotoUnfavouriteObserver() {
+        PhotoCache.shared.photoUnFavouritedHandler = { [weak self] (photo) in
+            self?.isReloadNeeded = true
+
+            if let row = self?.cellViewModels.firstIndex(where: {$0.id == photo.id}) {
+                self?.cellViewModels[row].isFavourite = false
             }
         }
     }

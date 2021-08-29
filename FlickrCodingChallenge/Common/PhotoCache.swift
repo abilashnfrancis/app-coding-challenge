@@ -14,6 +14,8 @@ class PhotoCache {
     private let favouritesKey = "favourites"
     private let photosKey = "photos_cache"
     
+    var photoUnFavouritedHandler: ((Photo)->())?
+    
     func saveFavouriteList(_ photos: [Photo]) {
         UserDefaults.standard.set(try? JSONEncoder().encode(photos), forKey: favouritesKey)
     }
@@ -56,7 +58,8 @@ class PhotoCache {
     func removePhotoFromFavourites(_ photo: Photo) {
         if var favorites = getFavouritePhotos() {
             if let index = favorites.firstIndex(where: {$0.id == photo.id}) {
-                favorites.remove(at: index)
+                let removed = favorites.remove(at: index)
+                photoUnFavouritedHandler?(removed)
                 saveFavouriteList(favorites)
             }
         }
